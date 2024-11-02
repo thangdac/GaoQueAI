@@ -9,8 +9,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageController {
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String Layout(Model model) {
         model.addAttribute("content", "home");
         return "layout"; // layout chính
+    }
+
+    @GetMapping("/Home")
+    public String home(Model model) {
+        model.addAttribute("message", "Chào mừng bạn đến với trang chủ!");
+        return "Home/home"; // Trả về trang "home"
+    }
+
+    @GetMapping("/Product")
+    public String product(Model model) {
+        model.addAttribute("message", "Chào mừng bạn đến với sản phẩm!");
+        return "Product/product"; // Trả về trang "product"
     }
 }
