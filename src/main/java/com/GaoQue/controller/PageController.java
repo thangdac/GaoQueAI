@@ -25,4 +25,10 @@ public class PageController {
         model.addAttribute("message", "Chào mừng bạn đến với sản phẩm!");
         return "Product/product"; // Trả về trang "product"
     }
+
+    @GetMapping("/AINhanDien")
+    public String AINhanDien(Model model) {
+        model.addAttribute("message", "Chào mừng bạn đến với AI Nhận Diện Gạo!");
+        return "AIPrice/AINhanDien"; // Trả về trang "AI Nhận Diện"
+    }
 }

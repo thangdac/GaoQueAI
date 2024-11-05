@@ -85,6 +85,12 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<version>3.3.2</version> <!-- thay đổi version tùy theo nhu cầu của bạn -->
+		</dependency>
+
 	</dependencies>
 
 	<build>
