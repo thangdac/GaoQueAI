@@ -3,13 +3,13 @@ package com.GaoQue.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class AppConfig {
+public class AppConfig1 {
 
     @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
+
 }
