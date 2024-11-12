@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -32,4 +33,5 @@ public class AINhanDienController {
             return ResponseEntity.status(500).body("Có lỗi xảy ra trong quá trình nhận diện.");
         }
     }
+
 }

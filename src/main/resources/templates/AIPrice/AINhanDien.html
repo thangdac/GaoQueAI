@@ -95,7 +95,6 @@
     </div><!-- End Image Upload Row -->
 
     <!-- Phần tử img để hiển thị ảnh đã upload và kết quả nhận diện nằm ngang -->
-    <!-- Phần tử img để hiển thị ảnh đã upload và kết quả nhận diện nằm ngang -->
     <div class="mt-3 d-flex justify-content-center align-items-center" id="previewAndResultContainer" style="display: none;">
       <!-- Phần tử img để hiển thị ảnh đã upload -->
       <div id="imagePreviewContainer" class="flex-fill me-3 text-center">
@@ -128,22 +127,28 @@
     imagePreviewContainer.style.display = 'none'; // Ẩn container ảnh
 
     const formData = new FormData(this);
-    const response = await fetch(`http://localhost:5000/classify`, {
-      method: 'POST',
-      body: formData,
-    });
 
-    if (response.ok) {
-      const data = await response.json();
-      imagePreview.src = URL.createObjectURL(formData.get('image'));
-      imagePreviewContainer.style.display = 'block'; // Hiển thị ảnh
-      classifyButton.style.display = 'block'; // Hiển thị nút nhận diện
-      classifyButton.onclick = function() {
-        document.getElementById('riceType').innerText = data.riceType;
-        document.getElementById('resultContainer').style.display = 'block'; // Hiển thị kết quả nhận diện
-      };
-    } else {
-      alert('Có lỗi xảy ra trong quá trình nhận diện.');
+    try {
+      const response = await fetch(`http://localhost:5000/classify`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        imagePreview.src = URL.createObjectURL(formData.get('image'));
+        imagePreviewContainer.style.display = 'block'; // Hiển thị ảnh
+        classifyButton.style.display = 'block'; // Hiển thị nút nhận diện
+        classifyButton.onclick = function() {
+          document.getElementById('riceType').innerText = data.riceType;
+          document.getElementById('resultContainer').style.display = 'block'; // Hiển thị kết quả nhận diện
+        };
+      } else {
+        alert('Có lỗi xảy ra trong quá trình nhận diện.');
+      }
+    } catch (error) {
+      console.error("Lỗi:", error);
+      alert("Không thể kết nối tới máy chủ. Bạn xin hãy vui lòng chờ!!");
     }
   };
 </script>

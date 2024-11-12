@@ -71,4 +71,10 @@ public class AdminController {
         model.addAttribute("message", "Chào mừng bạn đến với trang AdminHome!");
         return "Admin/AdminHome/Home"; // Trả về trang "buttons"
     }
+
+    @GetMapping("/Admin/AINhanDien")
+    public String AINhanDien(Model model) {
+        model.addAttribute("message", "Chào mừng bạn đến với trang AINhanDien!");
+        return "Admin/AI/AINhanDien"; // Trả về trang "buttons"
+    }
 }
