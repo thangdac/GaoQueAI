@@ -4,7 +4,6 @@ import com.GaoQue.dto.ImageDto;
 import com.GaoQue.dto.ProductDto;
 import com.GaoQue.exceptions.ResourceNotFoundException;
 import com.GaoQue.model.Category;
-import com.GaoQue.model.Image;
 import com.GaoQue.model.Product;
 import com.GaoQue.request.AddProductRequest;
 import com.GaoQue.request.ProductUpdateRequest;
@@ -19,9 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.text.NumberFormat;
+import java.util.Locale;
 
-import java.io.IOException;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
@@ -37,35 +39,42 @@ public class ProductController {
         this.imageService = imageService;
     }
 
-    @GetMapping("/Admin/AdminProduct")
+    //Admin
+    //List product
+    @GetMapping("/Admin/Product")
     public String getAllProducts(Model model) {
-        // Lấy danh sách sản phẩm từ service
         List<Product> products = productService.getAllProducts();
-        // Chuyển đổi danh sách sản phẩm sang dạng ProductDto
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
-        // Thêm danh sách sản phẩm vào model
+
+        // Định dạng giá từng sản phẩm theo kiểu Việt Nam
+        Locale vietnamLocale = new Locale("vi", "VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnamLocale);
+
+        for (Product product : products) {
+            product.setFormattedPrice(currencyFormatter.format(product.getPrice()));
+        }
+
         model.addAttribute("products", convertedProducts);
-        // Trả về tên của View (file HTML) sẽ được render
-        return "/Admin/Manage/Product";
+        return "/Admin/Product/Product";
     }
 
-    //chi tiết sản phẩm
+    //Detail Product
     @GetMapping("Admin/ProductDetail/{productId}")
     public ModelAndView getProductById(@PathVariable Long productId) {
-        ModelAndView modelAndView = new ModelAndView("/Admin/Manage/ProductDetail"); // Tên của view (HTML) bạn muốn trả về
+        ModelAndView modelAndView = new ModelAndView("/Admin/Product/ProductDetail");
         try {
             Product product = productService.getProductById(productId);
             ProductDto productDto = productService.convertToDto(product);
-            modelAndView.addObject("product", productDto); // Thêm sản phẩm vào model
-            modelAndView.setViewName("/Admin/Manage/ProductDetail"); // Chỉ định view name
+            modelAndView.addObject("product", productDto);
+            modelAndView.setViewName("/Admin/Product/ProductDetail");
         } catch (ResourceNotFoundException e) {
-            modelAndView.setViewName("/Admin/Pages/Page404"); // Chỉ định view lỗi
-            modelAndView.addObject("errorMessage", e.getMessage()); // Thêm thông điệp lỗi vào model
+            modelAndView.setViewName("/Admin/Pages/Page404");
+            modelAndView.addObject("errorMessage", e.getMessage());
         } catch (Exception e) {
             modelAndView.setViewName("/Admin/Pages/Page404");
             modelAndView.addObject("errorMessage", "Internal server error");
         }
-        return modelAndView; // Trả về model và view
+        return modelAndView;
     }
 
     //add product
@@ -73,9 +82,8 @@ public class ProductController {
     public String showAddProductForm(Model model) {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
-        // Khởi tạo đối tượng product cho form
         model.addAttribute("product", new AddProductRequest());
-        return "/Admin/Manage/AddProduct";
+        return "/Admin/Product/AddProduct";
     }
 
     @PostMapping("Admin/AddProduct")
@@ -83,77 +91,137 @@ public class ProductController {
                              @RequestParam List<MultipartFile> files,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "/Admin/Manage/AddProduct"; // Nếu có lỗi validation, trả về lại trang form.
+            return "/Admin/Product/AddProduct"; // Nếu có lỗi validation, trả về lại trang form.
         }
         try {
-            // Thêm sản phẩm vào hệ thống
             Product theProduct = productService.addProduct(product);
-            // Lưu hình ảnh cho sản phẩm
             List<ImageDto> imageDtos = imageService.saveImages(theProduct.getId(), files);
-            // Chuyển sản phẩm sang DTO để dễ hiển thị trên giao diện
             ProductDto productDto = productService.convertToDto(theProduct);
-            // Thêm thông tin vào model để hiển thị trong view
             model.addAttribute("message", "Thêm sản phẩm thành công!");
             model.addAttribute("product", productDto);
-            model.addAttribute("images", imageDtos); // Danh sách hình ảnh
-            // Điều hướng đến trang hiển thị chi tiết sản phẩm (ví dụ: "product-detail.html")
-            return "/Admin/Manage/ProductDetail";
+            model.addAttribute("images", imageDtos);
+            return "/Admin/Product/ProductDetail";
         } catch (Exception e) {
-            // Thêm thông báo lỗi vào model
             model.addAttribute("error", "Failed to add product: " + e.getMessage());
-            // Điều hướng đến trang lỗi hoặc trang thêm sản phẩm
-            return "/Admin/Manage/AddProduct";
+            return "/Admin/Product/AddProduct";
         }
     }
 
-    //xóa sản phẩm
-    @GetMapping("Admin/DeleteProduct/{productId}")
-    public String deleteProduct(@PathVariable Long productId, RedirectAttributes redirectAttributes) {
-        try {
-            productService.deleteProductById(productId);
-            // Thêm thông báo thành công vào flash attributes để hiển thị trên giao diện
-            redirectAttributes.addFlashAttribute("message", "Xóa sản phẩm thành công!");
-        } catch (ResourceNotFoundException e) {
-            // Thêm thông báo lỗi vào flash attributes
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-        }
-        // Chuyển hướng về trang danh sách sản phẩm
-        return "redirect:/Admin/AdminProduct";
-    }
-
+    // Update Product
     @GetMapping("Admin/UpdateProduct/{productId}")
-    public String UpdateProduct(@PathVariable Long productId, Model model) {
+    public String updateProductForm(@PathVariable Long productId, Model model) {
         try {
-            // Lấy sản phẩm từ database
             Product product = productService.getProductById(productId);
             List<Category> categories = categoryService.getAllCategories();
-
             model.addAttribute("product", product);
             model.addAttribute("categories", categories);
-
-            return "Admin/Manage/UpdateProduct";
+            return "Admin/Product/UpdateProduct";
         } catch (ResourceNotFoundException e) {
             return "Admin/Pages/Page404";
         }
     }
 
     @PostMapping("Admin/UpdateProduct/{productId}")
-    public String updateProduct(@PathVariable Long productId, @ModelAttribute ProductUpdateRequest request, Model model,
-                                @RequestParam List<MultipartFile> files) {
+    public String updateProduct(@PathVariable Long productId,
+                                @ModelAttribute ProductUpdateRequest request,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes,
+                                Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/Admin/UpdateProduct/{productId}";
+        }
         try {
-            // Gọi phương thức updateProduct trong service để cập nhật sản phẩm
             Product updatedProduct = productService.updateProduct(request, productId);
+            ProductDto productDto = productService.convertToDto(updatedProduct);
+            redirectAttributes.addFlashAttribute("product", productDto);
+            redirectAttributes.addFlashAttribute("message", "Cập nhật sản phẩm thành công!");
+            return "redirect:/Admin/Product";
+        } catch (ResourceNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", "Sản phẩm không tồn tại!");
+            return "redirect:/Admin/Product";
+        }
+    }
 
-            // Cập nhật hình ảnh liên quan đến sản phẩm
-            imageService.updateImages( updatedProduct.getId(), files);
+    //Delete Product
+    @GetMapping("Admin/DeleteProduct/{productId}")
+    public String deleteProduct(@PathVariable Long productId, RedirectAttributes redirectAttributes) {
+        try {
+            productService.deleteProductById(productId);
+            redirectAttributes.addFlashAttribute("message", "Xóa sản phẩm thành công!");
+        } catch (ResourceNotFoundException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/Admin/Pages/Page404";
+        }
+        return "redirect:/Admin/Product";
+    }
 
-            // Thêm thông tin sản phẩm đã cập nhật vào model
-            model.addAttribute("product", updatedProduct);
-            // Thêm thông báo thành công
-            model.addAttribute("message", "Cập nhật sản phẩm thành công!");
-            return "Admin/Manage/ProductDetail";  // Trả về trang cập nhật sản phẩm với thông báo thành công
+    // Update Image
+    @GetMapping("Admin/UpdateImage/{productId}")
+    public String updateImageForm(@PathVariable Long productId, Model model) {
+        try {
+            Product product = productService.getProductById(productId);
+            model.addAttribute("product", product);
+            return "Admin/Product/UpdateImage";
         } catch (ResourceNotFoundException e) {
             return "Admin/Pages/Page404";
         }
     }
+
+    @PostMapping("/Admin/UpdateImage/{productId}")
+    public String uploadImages(@PathVariable Long productId,
+                               @RequestParam("files") List<MultipartFile> files,
+                               Model model) {
+        Product product = productService.getProductById(productId);
+        if (files.isEmpty()) {
+            model.addAttribute("error", "Không có file nào được chọn.");
+            model.addAttribute("product", product);
+            return "Admin/Product/UpdateImage";
+        }
+        List<String> errorMessages = files.stream()
+                .filter(file -> !file.getContentType().startsWith("image") || file.getSize() > 5 * 1024 * 1024)
+                .map(file -> "File " + file.getOriginalFilename() + " không hợp lệ.")
+                .collect(Collectors.toList());
+
+        if (!errorMessages.isEmpty()) {
+            model.addAttribute("error", String.join("<br/>", errorMessages));
+            model.addAttribute("product", product);
+            return "Admin/Product/UpdateImage";
+        }
+        try {
+            List<ImageDto> uploadedImages = imageService.saveImages(productId, files);
+            model.addAttribute("uploadedImages", uploadedImages);
+            model.addAttribute("message", "Tải hình ảnh lên thành công!");
+            model.addAttribute("product", product);
+            return "redirect:/Admin/UpdateImage/" + productId; // Correct redirect
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi: " + e.getMessage());
+            model.addAttribute("product", product);
+            return "Admin/Product/UpdateImage";
+        }
+    }
+
+    //delete Image
+    @PostMapping("/Admin/DeleteImage/{imageId}")
+    public String deleteImage(@PathVariable Long imageId, @RequestParam Long productId, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            imageService.deleteImageById(imageId);
+            model.addAttribute("message", "Xóa ảnh thành công!");
+            Product product = productService.getProductById(productId);
+            model.addAttribute("product", product);
+            redirectAttributes.addFlashAttribute("message", "Đã xóa sản phẩm!");
+            return "redirect:/Admin/UpdateImage/" + productId;
+        } catch (ResourceNotFoundException e) {
+            model.addAttribute("error", "Không tìm thấy ảnh với ID: " + imageId);
+            return "Admin/Pages/Page404";
+        } catch (Exception e) {
+            model.addAttribute("error", "Lỗi khi xóa ảnh: " + e.getMessage());
+            return "Admin/Product/UpdateImage";
+        }
+    }
+
+    //user
+    //list
+
+
+
 }

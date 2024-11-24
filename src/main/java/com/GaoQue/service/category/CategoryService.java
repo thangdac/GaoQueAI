@@ -4,6 +4,7 @@ import com.GaoQue.exceptions.AlreadyExistsException;
 import com.GaoQue.exceptions.ResourceNotFoundException;
 import com.GaoQue.model.Category;
 import com.GaoQue.repository.CategoryRepository;
+import com.GaoQue.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryService implements ICategoryService {
     private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public Category getCategoryById(Long id) {
@@ -49,10 +51,14 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public void deleteCategoryById(Long id) {
+        if (productRepository.existsByCategoryId(id)) {
+            throw new ResourceNotFoundException("Không thể xóa loại sản phẩm này vì có sản phẩm liên kết!");
+        }
         categoryRepository.findById(id)
                 .ifPresentOrElse(categoryRepository::delete, () -> {
                     throw new ResourceNotFoundException("Category not found!");
                 });
-
     }
+
+
 }

@@ -2,10 +2,8 @@ package com.GaoQue.controller;
 
 import com.GaoQue.service.AIPrice.RiceClassificationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,6 +20,8 @@ public class AINhanDienController {
     public AINhanDienController(RiceClassificationService riceClassificationService) {
         this.riceClassificationService = riceClassificationService;
     }
+
+
 
     // Phương thức nhận ảnh từ view
     @PostMapping("/classify")
