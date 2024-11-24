@@ -36,18 +36,6 @@ public class AdminController {
         return "Admin/Tables/tables"; // Trả về trang "tables"
     }
 
-    @GetMapping("/Admin/login")
-    public String login(Model model) {
-        model.addAttribute("message", "Chào mừng bạn đến với trang login!");
-        return "Admin/Pages/login"; // Trả về trang "login"
-    }
-
-    @GetMapping("/Admin/register")
-    public String register(Model model) {
-        model.addAttribute("message", "Chào mừng bạn đến với trang register!");
-        return "Admin/Pages/register"; // Trả về trang "register"
-    }
-
     @GetMapping("/Admin/forgotPassword")
     public String forgotPassword(Model model) {
         model.addAttribute("message", "Chào mừng bạn đến với trang forgotPassword!");

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Admin Registration Page">
+    <meta name="author" content="">
+    <link href="/static/assets/img/logo.png" rel="icon">
+    <title>Đăng Kí</title>
+    <link href="/FormAdmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="/FormAdmin/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+                display: none;
+            }
+        }
+
+        .bg-register-image{
+            background:url(/images/register.avif);
+            background-position:center;
+            background-size:cover
+        }
+        .bg-gradient-light {
+            background: url('/images/nen.jpg');
+            background-position: center;
+            background-size: cover; /* Giúp hình ảnh bao phủ toàn bộ khu vực */
+            background-repeat: no-repeat; /* Tránh lặp hình ảnh */
+        }
+
+
+    </style>
+</head>
+
+<body class="bg-gradient-light">
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Tạo tài khoản Gạo Quê!</h1>
+                        </div>
+
+                        <!-- thông báo -->
+                        <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"
+                             style="animation: fadeOut 3s ease-out forwards;">
+                        </div>
+                        <!-- Show error messages -->
+                        <div th:if="${message}" class="alert alert-success text-center" th:text="${message}"
+                             style="animation: fadeOut 3s ease-out forwards;">
+                        </div>
+                        <!-- thông báo -->
+
+                        <form th:action="@{/register}" method="post" th:object="${user}">
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="text" class="form-control form-control-user" id="firstName" name="firstName" th:field="*{firstName}" placeholder="First Name" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control form-control-user" id="lastName" name="lastName" th:field="*{lastName}" placeholder="Last Name" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" class="form-control form-control-user" id="email" name="username" th:field="*{email}" placeholder="Email Address" required>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="password" class="form-control form-control-user" id="password" name="password" th:field="*{password}" placeholder="Password" required>
+                                </div>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="password" class="form-control form-control-user" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-user btn-block">Đăng Kí</button>
+                            <hr>
+                            <a href="/User/Google" class="btn btn-google btn-user btn-block">
+                                <i class="fab fa-google fa-fw"></i> Đăng nhập bằng Google
+                            </a>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" href="/User/forgotPassword">Quên mật khẩu?</a>
+                        </div>
+                        <div class="text-center">
+                            <a class="small" href="/User/login">Bạn đã có tài khoản? Đăng Nhập!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/FormAdmin/vendor/jquery/jquery.min.js"></script>
+<script src="/FormAdmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/FormAdmin/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/FormAdmin/js/sb-admin-2.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+
+</body>
+</html>

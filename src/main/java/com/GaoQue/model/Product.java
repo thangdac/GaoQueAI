@@ -20,10 +20,11 @@ public class Product {
     private String name;
     private String brand;
     private BigDecimal price;
+    private String formattedPrice;
     private int inventory;
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "category_id")
     private Category category;
 
