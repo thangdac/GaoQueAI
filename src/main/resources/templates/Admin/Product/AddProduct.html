@@ -97,7 +97,7 @@
                 <div class="card shadow mb-4">
                     <!-- Form thêm sản phẩm mới -->
                     <div class="card-body">
-                        <form th:action="@{/FormAdmin/AddProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+                        <form th:action="@{/Admin/AddProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="name">Tên sản phẩm:</label>
                                 <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Nhập tên sản phẩm" required>
@@ -138,7 +138,7 @@
                         </form>
                         <!-- Back Button -->
                         <div class="text-center card-body">
-                            <a class="btn btn-primary" href="/FormAdmin/Product">
+                            <a class="btn btn-primary" href="/Admin/Product">
                                 <i class="fas fa-arrow-left"></i> Danh sách sản phẩm
                             </a>
                         </div>

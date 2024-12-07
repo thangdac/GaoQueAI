@@ -49,7 +49,7 @@
                 <!-- Page Heading -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1 class="h3 text-gray-800">Trang Quản Lý Loại Sản Phẩm</h1>
-                    <a href="/FormAdmin/AddCategory" class="btn btn-primary">
+                    <a href="/Admin/AddCategory" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Thêm loại sản phẩm
                     </a>
                 </div>
@@ -88,8 +88,8 @@
                                         <td th:text="${category.id}">ID</td>
                                         <td th:text="${category.name}">Tên sản phẩm</td>
                                         <td>
-                                            <a th:href="@{/FormAdmin/UpdateCategory/{id}(id=${category.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
-                                            <a th:href="@{/FormAdmin/DeleteCategory/{id}(id=${category.id})}" class="btn btn-danger btn-sm"
+                                            <a th:href="@{/Admin/UpdateCategory/{id}(id=${category.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
+                                            <a th:href="@{/Admin/DeleteCategory/{id}(id=${category.id})}" class="btn btn-danger btn-sm"
                                                onclick="return confirm('Bạn có chắc chắn muốn xóa loại sản phẩm này không?');">Xóa</a>
                                         </td>
                                     </tr>

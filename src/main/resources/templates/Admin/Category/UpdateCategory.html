@@ -11,7 +11,7 @@
     <!-- Favicons -->
     <link href="/FormAdmin/img/avt.png" rel="icon">
 
-    <title>Admin - Update Product</title>
+    <title>Admin - Update category</title>
 
     <!-- Custom fonts for this template-->
     <link href="/FormAdmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -135,7 +135,7 @@
                 <div class="card shadow mb-4">
                     <!-- Form cập nhật sản phẩm -->
                     <div class="card-body">
-                        <form th:action="@{/FormAdmin/UpdateCategory/{id}(id=${category.id})}" th:object="${category}" method="post" enctype="multipart/form-data">
+                        <form th:action="@{/Admin/UpdateCategory/{id}(id=${category.id})}" th:object="${category}" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="_method" value="post"/>
                             <div class="form-group">
                                 <label for="name">Tên sản phẩm:</label>
@@ -145,7 +145,7 @@
                             <button type="submit" class="btn-submit">Cập nhật loại sản phẩm</button>
                         </form>
                         <div class="card-body">
-                            <a class="btn btn-info" href="/FormAdmin/Category">
+                            <a class="btn btn-info" href="/Admin/Category">
                                 <i class="fas fa-arrow-left"></i>Danh sách loại sản phẩm
                             </a>
                         </div>

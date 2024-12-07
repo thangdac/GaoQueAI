@@ -135,7 +135,7 @@
                 <div class="card shadow mb-4">
                     <!-- Form cập nhật sản phẩm -->
                     <div class="card-body">
-                        <form th:action="@{/FormAdmin/UpdateProduct/{productId}(productId=${product.id})}" th:object="${product}" method="post" enctype="multipart/form-data">
+                        <form th:action="@{/Admin/UpdateProduct/{productId}(productId=${product.id})}" th:object="${product}" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="_method" value="post"/>
                             <div class="form-group">
                                 <label for="name">Tên sản phẩm:</label>
@@ -169,7 +169,7 @@
                             <button type="submit" class="btn-submit">Cập nhật sản phẩm</button>
                         </form>
                         <div class="card-body">
-                        <a class="btn btn-info" href="/FormAdmin/Product">
+                        <a class="btn btn-info" href="/Admin/Product">
                             <i class="fas fa-arrow-left"></i>Danh sách sản phẩm
                         </a>
                         </div>

@@ -144,12 +144,12 @@ public class ProductController {
 
     //Delete Product
     @GetMapping("Admin/DeleteProduct/{productId}")
-    public String deleteProduct(@PathVariable Long productId, RedirectAttributes redirectAttributes) {
+    public String deleteProduct(@PathVariable Long productId, RedirectAttributes redirectAttributes, Model model) {
         try {
             productService.deleteProductById(productId);
-            redirectAttributes.addFlashAttribute("message", "Xóa sản phẩm thành công!");
+            model.addAttribute("message", "Xóa sản phẩm thành công!");
         } catch (ResourceNotFoundException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            model.addAttribute("error", e.getMessage());
             return "redirect:/Admin/Pages/Page404";
         }
         return "redirect:/Admin/Product";
@@ -218,10 +218,5 @@ public class ProductController {
             return "Admin/Product/UpdateImage";
         }
     }
-
-    //user
-    //list
-
-
 
 }

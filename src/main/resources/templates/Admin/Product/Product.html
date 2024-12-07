@@ -49,7 +49,7 @@
                 <!-- Page Heading -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1 class="h3 text-gray-800">Trang Quản Lý Sản Phẩm</h1>
-                    <a href="/FormAdmin/AddProduct" class="btn btn-primary">
+                    <a href="/Admin/AddProduct" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Thêm sản phẩm
                     </a>
                 </div>
@@ -106,9 +106,9 @@
                                     <td th:text="${product.price}">Giá</td>
                                     <td>
                                         <!-- Các nút chức năng -->
-                                        <a th:href="@{/FormAdmin/UpdateProduct/{id}(id=${product.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
-                                        <a th:href="@{/FormAdmin/UpdateImage/{id}(id=${product.id})}" class="btn btn-warning btn-sm">Sửa ảnh</a>
-                                        <a th:href="@{/FormAdmin/DeleteProduct/{id}(id=${product.id})}" class="btn btn-danger btn-sm"
+                                        <a th:href="@{/Admin/UpdateProduct/{id}(id=${product.id})}" class="btn btn-primary btn-sm">Chỉnh sửa</a>
+                                        <a th:href="@{/Admin/UpdateImage/{id}(id=${product.id})}" class="btn btn-warning btn-sm">Sửa ảnh</a>
+                                        <a th:href="@{/Admin/DeleteProduct/{id}(id=${product.id})}" class="btn btn-danger btn-sm"
                                            onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">Xóa</a>
                                     </td>
                                 </tr>

@@ -19,7 +19,9 @@ public class RiceClassificationService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private String flaskApiUrl = "http://localhost:5000"; // Địa chỉ API Flask
+
+
+    private String flaskApiUrl = "http://localhost:11223"; // Địa chỉ API Flask
 
     public String classifyRice(MultipartFile file) throws IOException {
         HttpHeaders headers = new HttpHeaders();

@@ -36,46 +36,6 @@
     </div>
   </div><!-- End Section Title -->
 
-  <!-- Section Title -->
-  <div class="container section-title" data-aos="fade-up">
-    <h2>Giới Thiệu AI Nhận Diện Gạo</h2>
-    <div class="section-description">
-      <p>
-        Hệ thống AI nhận diện gạo của chúng tôi được phát triển để giúp bạn xác định loại gạo mà gia đình mình đang sử dụng. Tuy nhiên, vì đây là công nghệ mới, AI hiện tại chỉ nhận diện được một số loại gạo phổ biến.
-      </p>
-      <p>
-        Nếu bạn biết thêm về các loại gạo khác, vui lòng <a href="#" class="description-link">đóng góp thông tin tại đây</a> để chúng tôi có thể cải thiện độ chính xác và mở rộng dữ liệu nhận diện.
-      </p>
-    </div>
-  </div>
-  <!-- End Section Title -->
-
-  <style>
-    .section-title {
-      text-align: center;
-      padding: 20px;
-      color: #333;
-    }
-
-    .section-description {
-      margin-top: 15px;
-      font-size: 1rem;
-      color: #555;
-    }
-
-    .description-link {
-      color: #007bff;
-      text-decoration: underline;
-    }
-
-    .description-link:hover {
-      text-decoration: none;
-      color: #0056b3;
-    }
-  </style>
-
-
-
   <div class="container">
     <div class="row gy-4">
       <div class="col-lg-6 col-md-8 mx-auto" data-aos="zoom-in" data-aos-delay="100">
@@ -104,11 +64,12 @@
 
       <!-- Phần tử để hiển thị kết quả nhận diện -->
       <div id="resultContainer" class="flex-fill text-center">
-        <h4>đây là gạo: </h4>
         <p id="riceType" style="font-weight: 500; color: #333;"></p>
+        <p id="detected_objects" style="font-weight: 500; color: #333;"></p>
       </div>
     </div>
 
+    <div id="status" th:text="${bienTrangThai}" style="display: none;"></div>
   </div>
 </section><!-- /Image Upload Section -->
 
@@ -116,41 +77,95 @@
 <div th:replace="~{layout :: footer}"></div>
 
 <script>
-  uploadForm.onsubmit = async function(event) {
-    event.preventDefault();
 
-    // Reset dữ liệu nhận diện trước đó
-    imagePreview.src = ""; // Xóa ảnh đã xem trước
-    document.getElementById('riceType').innerText = ""; // Xóa kết quả nhận diện
-    document.getElementById('resultContainer').style.display = 'none'; // Ẩn container kết quả
-    classifyButton.style.display = 'none'; // Ẩn nút nhận diện
-    imagePreviewContainer.style.display = 'none'; // Ẩn container ảnh
-
-    const formData = new FormData(this);
-
+  async function fetchStatus() {
     try {
-      const response = await fetch(`http://localhost:5000/classify`, {
-        method: 'POST',
-        body: formData,
-      });
-
+      const response = await fetch('/api/status');
       if (response.ok) {
         const data = await response.json();
-        imagePreview.src = URL.createObjectURL(formData.get('image'));
-        imagePreviewContainer.style.display = 'block'; // Hiển thị ảnh
-        classifyButton.style.display = 'block'; // Hiển thị nút nhận diện
-        classifyButton.onclick = function() {
-          document.getElementById('riceType').innerText = data.riceType;
-          document.getElementById('resultContainer').style.display = 'block'; // Hiển thị kết quả nhận diện
-        };
+        console.log("Trạng thái từ server:", data.bienTrangThai);
+        return data.bienTrangThai;
       } else {
-        alert('Có lỗi xảy ra trong quá trình nhận diện.');
+        console.error("Không thể lấy trạng thái từ server.");
+        return false;
       }
     } catch (error) {
-      console.error("Lỗi:", error);
-      alert("Không thể kết nối tới máy chủ. Bạn xin hãy vui lòng chờ!!");
+      console.error("Lỗi khi gọi API trạng thái:", error);
+      return false;
     }
-  };
+  }
+  (async () => {
+    const BienTrangThai = await fetchStatus();
+
+    uploadForm.onsubmit = async function (event) {
+      event.preventDefault();
+
+      // Kiểm tra trạng thái trước khi thực hiện gửi ảnh
+      if (!BienTrangThai) {
+        alert("Server đang tắt. Không thể nhận diện gạo.");
+        return;
+      }
+
+      // Reset dữ liệu nhận diện trước đó
+      imagePreview.src = ""; // Xóa ảnh đã xem trước
+      document.getElementById('riceType').innerText = ""; // Xóa kết quả nhận diện
+      document.getElementById('detected_objects').innerText = ""; // Xóa kết quả nhận diện
+      document.getElementById('resultContainer').style.display = 'none'; // Ẩn container kết quả
+      classifyButton.style.display = 'none'; // Ẩn nút nhận diện
+      imagePreviewContainer.style.display = 'none'; // Ẩn container ảnh
+
+      const formData = new FormData(this);
+
+      try {
+        const response = await fetch(`http://localhost:11223/classify`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // Hiển thị ảnh đã chọn
+          imagePreview.src = URL.createObjectURL(formData.get('image'));
+          imagePreviewContainer.style.display = 'block'; // Hiển thị ảnh
+          classifyButton.style.display = 'block'; // Hiển thị nút nhận diện
+
+          // Lắng nghe sự kiện khi người dùng nhấn nút nhận diện
+          classifyButton.onclick = function () {
+            // Kiểm tra và hiển thị riceType nếu có
+            const riceTypeElement = document.getElementById('riceType');
+            if (riceTypeElement && data.riceType) {
+              riceTypeElement.innerText = `Loại gạo: ${data.riceType}`;
+            } else {
+              riceTypeElement.innerText = ''; // Nếu không có riceType, bỏ qua
+            }
+
+            // Kiểm tra và hiển thị detectedObjects nếu có
+            const detectedObjectsElement = document.getElementById('detected_objects');
+            if (detectedObjectsElement && data.detectedObjects) {
+              // Kiểm tra nếu data.detectedObjects là mảng và có ít nhất một đối tượng
+              if (Array.isArray(data.detectedObjects) && data.detectedObjects.length > 0) {
+                detectedObjectsElement.innerText = `Vật thể nhận diện được khác gạo: ${data.detectedObjects.join(', ')}`;
+              } else {
+                detectedObjectsElement.innerText = 'Không có vật thể nhận diện.';
+              }
+            } else {
+              detectedObjectsElement.innerText = ''; // Nếu không có detectedObjects, bỏ qua
+            }
+
+            // Hiển thị phần kết quả nhận diện
+            document.getElementById('resultContainer').style.display = 'block';
+          };
+        } else {
+          alert('Có lỗi xảy ra trong quá trình nhận diện.');
+        }
+
+      } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Không thể kết nối tới máy chủ. Bạn xin hãy vui lòng chờ!!");
+      }
+    };
+  })();
 </script>
 
 <!-- Scroll Top -->

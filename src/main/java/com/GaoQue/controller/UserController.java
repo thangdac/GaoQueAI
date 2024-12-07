@@ -5,8 +5,11 @@ import com.GaoQue.exceptions.AlreadyExistsException;
 import com.GaoQue.model.User;
 import com.GaoQue.request.CreateUserRequest;
 import com.GaoQue.service.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,12 +22,35 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error, Model model) {
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model,
+                        HttpSession session) {
         if (error != null) {
             model.addAttribute("error", "Tài khoản hoặc mật khẩu không đúng!!");
         }
-        return "User/login";
+
+        if (logout != null) {
+            model.addAttribute("message", "Đăng xuất thành công.");
+        }
+
+        // Kiểm tra xem người dùng đã đăng nhập chưa
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            // Lấy thông tin người dùng (email hoặc userId từ Spring Security)
+            String username = authentication.getName();
+
+            // Tìm người dùng từ database hoặc thông tin khác
+            User user = userService.findByUser(username);
+
+            if (user != null) {
+                // Lưu userId vào session sau khi người dùng đăng nhập thành công
+                session.setAttribute("userId", user.getId());
+            }
+        }
+        return "User/login"; // Trả về trang đăng nhập
     }
+
 
     @GetMapping("/register")
     public String showCreateUserForm(Model model) {
@@ -57,5 +83,12 @@ public class UserController {
             return "/User/register";
         }
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // Xóa toàn bộ session, bao gồm userId
+        return "redirect:/login?logout=true"; // Chuyển hướng đến trang đăng nhập và hiển thị thông báo đăng xuất thành công
+    }
+
 
 }

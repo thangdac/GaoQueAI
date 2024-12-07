@@ -7,14 +7,19 @@ import com.GaoQue.model.Product;
 import com.GaoQue.repository.CartItemRepository;
 import com.GaoQue.repository.CartRepository;
 import com.GaoQue.service.product.IProductService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CartItemService  implements ICartItemService{
+    private static final String CART_SESSION_KEY = "cart";
     private final CartItemRepository cartItemRepository;
     private final CartRepository cartRepository;
     private final IProductService productService;
@@ -49,32 +54,23 @@ public class CartItemService  implements ICartItemService{
     }
 
     @Override
-    public void removeItemFromCart(Long cartId, Long productId) {
-        Cart cart = cartService.getCart(cartId);
-        CartItem itemToRemove = getCartItem(cartId, productId);
-        cart.removeItem(itemToRemove);
-        cartRepository.save(cart);
-    }
+    public void removeItemFromCart(Long cartId, Long itemId) {
+        // Lấy giỏ hàng
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("Giỏ hàng không tồn tại"));
 
-    @Override
-    public void updateItemQuantity(Long cartId, Long productId, int quantity) {
-        Cart cart = cartService.getCart(cartId);
-        cart.getItems()
-                .stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
+        // Tìm và xóa sản phẩm
+        CartItem itemToRemove = cart.getItems().stream()
+                .filter(item -> item.getId().equals(itemId))
                 .findFirst()
-                .ifPresent(item -> {
-                    item.setQuantity(quantity);
-                    item.setUnitPrice(item.getProduct().getPrice());
-                    item.setTotalPrice();
-                });
-        BigDecimal totalAmount = cart.getItems()
-                .stream().map(CartItem ::getTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .orElseThrow(() -> new ResourceNotFoundException("Sản phẩm không tồn tại trong giỏ hàng"));
 
-        cart.setTotalAmount(totalAmount);
-        cartRepository.save(cart);
+        cart.removeItem(itemToRemove);
+
+        // Cập nhật giỏ hàng
+        cartRepository.save(cart); // Hàm updateTotalAmount sẽ được gọi tự động khi removeItem.
     }
+
 
     @Override
     public CartItem getCartItem(Long cartId, Long productId) {
@@ -84,4 +80,14 @@ public class CartItemService  implements ICartItemService{
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElseThrow(() -> new ResourceNotFoundException("Item not found"));
     }
+
+    public Cart getCart(@NonNull HttpSession session) {
+        return Optional.ofNullable((Cart) session.getAttribute(CART_SESSION_KEY))
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    session.setAttribute(CART_SESSION_KEY, cart);
+                    return cart;
+                });
+    }
+
 }
