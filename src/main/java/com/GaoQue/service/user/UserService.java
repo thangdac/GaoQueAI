@@ -80,6 +80,27 @@ public class UserService implements IUserService, UserDetailsService {
                 }) .orElseThrow(() -> new AlreadyExistsException("Oops!" +request.getEmail() +" already exists!"));
     }
 
+    public User updateUser(Long userId, String firstName, String lastName, String email, String address, String phoneNumber) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Người dùng không tồn tại với ID: " + userId));
+        if (firstName != null && !firstName.isEmpty()) {
+            user.setFirstName(firstName);
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            user.setLastName(lastName);
+        }
+        if (email != null && !email.isEmpty() && !user.getEmail().equals(email) && !userRepository.existsByEmail(email)) {
+            user.setEmail(email);
+        }
+        if (address != null && !address.isEmpty()) {
+            user.setAddressLine(address);
+        }
+        if (phoneNumber != null && !phoneNumber.isEmpty()) {
+            user.setPhoneNumber(phoneNumber);
+        }
+        return userRepository.save(user);
+    }
+
     @Override
     public UserDto convertUserToDto(User user) {
         return modelMapper.map(user, UserDto.class);

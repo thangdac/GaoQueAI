@@ -37,7 +37,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders;
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles", // Bảng trung gian 'user_roles'
             joinColumns = @JoinColumn(name = "user_id"),
@@ -45,6 +45,11 @@ public class User {
     )
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
+
+    // Thêm địa chỉ và số điện thoại vào model User
+    private String addressLine;
+
+    private String phoneNumber;
 
     public boolean isAccountNonExpired() {
         return true;
@@ -74,6 +79,4 @@ public class User {
     public int hashCode() {
         return getClass().hashCode();
     }
-
-
 }

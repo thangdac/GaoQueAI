@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <style>
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+                display: none; /* Ẩn phần tử hoàn toàn khỏi layout */
+            }
+        }
+     body {
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+         background-color: #f9f9f9;
+         color: #333;
+     }
+    h1 {
+        text-align: center;
+        color: #444;
+        margin-top: 20px;
+    }
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+    th, td {
+        text-align: left;
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .actions button {
+        margin: 0 5px;
+        padding: 5px 10px;
+        font-size: 14px;
+        background-color: #dc3545;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+    .actions button:hover {
+        background-color: #c82333;
+    }
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border-color: #c3e6cb;
+    }
+    .cart-total {
+        text-align: right;
+        margin: 20px 0;
+        font-size: 18px;
+    }
+    .btn-clear {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #dc3545;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .btn-clear:hover {
+        background-color: #c82333;
+    }
+    .continue-shopping {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        color: #007bff;
+        text-decoration: none;
+    }
+    .continue-shopping:hover {
+        text-decoration: underline;
+    }
+
+    </style>
+
+</head>
+<body class="index-page">
+<!-- Header -->
+<div th:replace="~{layout :: header}"></div>
+
+<!-- thông báo -->
+<!-- Show error messages -->
+<div th:if="${message}" class="alert alert-success text-center" th:text="${message}"
+     style="animation: fadeOut 3s ease-out forwards;">
+</div>
+<!-- thông báo -->
+
+<!-- Pricing Section -->
+<section id="pricing" class="pricing section">
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Gỏi Hàng</h2>
+        <div><span>Các sản phẩm có trong</span> <span class="description-title">gỏi hàng</span></div>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+        <div th:if="${cart != null and not #lists.isEmpty(cart.items)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Sản Phẩm</th>
+                    <th>Ảnh</th>
+                    <th>Số Lượng</th>
+                    <th>Giá</th>
+                    <th>Tổng</th>
+                    <th>Hành Động</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${cart.items}">
+                    <td th:text="${item.product.name}"></td>
+                    <td>
+                        <div th:unless="${#lists.isEmpty(item.product.images)}" style="text-align: center;">
+                            <img th:src="${item.product.images[0].downloadUrl}" alt="${product.images[0].fileName}"
+                                 style="max-width: 150px; margin: 5px; border: 1px solid #ddd; border-radius: 4px;">
+                        </div>
+                    </td>
+                    <td th:text="${item.quantity}"></td>
+                    <td th:text="${item.product.price}"></td>
+                    <td th:text="${item.getTotalPrice()}"></td>
+                    <td>
+                        <form th:action="@{/cart/{cartId}/item/{itemId}/remove(cartId=${cart.id}, itemId=${item.id})}" method="post">
+                            <button type="submit" class="actions">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Tổng cộng -->
+            <div class="cart-total">
+                <strong>Tổng cộng:</strong>
+                <span th:text="${cart.totalAmount}"></span>
+            </div>
+
+            <!-- Nút xóa toàn bộ giỏ hàng -->
+            <form th:action="@{/cart/clear}" method="post">
+                <button type="submit" class="btn-clear" onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ giỏ hàng không?')">Xóa Giỏ Hàng</button>
+            </form>
+        </div>
+
+        <!-- Hiển thị nếu giỏ hàng trống -->
+        <div th:if="${cart == null or #lists.isEmpty(cart.items)}">
+            <p>Giỏ hàng của bạn đang trống.</p>
+        </div>
+        <form th:action="@{cart/order}" method="get">
+            <input type="hidden" name="userId" th:value="${user.id}" />
+            <button type="submit">Xác nhận đơn hàng</button>
+        </form>
+        <!-- Nút tiếp tục mua sắm -->
+        <a href="/" class="continue-shopping">Tiếp Tục Mua Sắm</a>
+    </div>
+</section><!-- /Pricing Section -->
+
+<!-- Footer -->
+<div th:replace="~{layout :: footer}"></div>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+<!-- Vendor JS Files -->
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/php-email-form/validate.js"></script>
+<script src="/assets/vendor/aos/aos.js"></script>
+<script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+<!-- Main JS File -->
+<script src="/assets/js/main.js"></script>
+<!-- Main JS File -->
+
+</body>
+</html>

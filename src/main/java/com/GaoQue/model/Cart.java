@@ -16,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class Cart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,11 +28,6 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-
-
-
-
 
     public void addItem(CartItem item) {
         this.items.add(item);

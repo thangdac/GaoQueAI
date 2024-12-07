@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận đơn hàng</title>
+</head>
+<body>
+<h1>Xác nhận đơn hàng</h1>
+
+<h2>Thông tin người dùng</h2>
+<p>Tên: <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span></p>
+<p>Email: <span th:text="${user.email}"></span></p>
+<p>Địa chỉ: <span th:text="${user.addressLine}"></span></p>
+<p>Số điện thoại: <span th:text="${user.phoneNumber}"></span></p>
+
+<h2>Đơn hàng</h2>
+<p>Ngày đặt: <span th:text="${order.orderDate}"></span></p>
+<p>Tổng tiền: <span th:text="${order.totalAmount}"></span></p>
+
+
+<h3>Danh sách sản phẩm</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Tên sản phẩm</th>
+        <th>Số lượng</th>
+        <th>Đơn giá</th>
+    </tr>
+    </thead>
+    <tbody>
+    <th:block th:each="item : ${order.getOrderItems()}">
+        <tr>
+            <td th:text="${item.product.name}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.product.price}"></td>
+        </tr>
+    </th:block>
+    </tbody>
+</table>
+
+<!-- Form để xác nhận mua hàng -->
+<form th:action="@{/order/confirm}" method="get">
+    <input type="hidden" name="userId" th:value="${user.id}" />
+    <button type="submit">Mua hàng</button>
+</form>
+</body>
+</html>
