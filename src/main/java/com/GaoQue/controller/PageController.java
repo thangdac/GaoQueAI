@@ -2,7 +2,6 @@ package com.GaoQue.controller;
 
 import com.GaoQue.dto.ProductDto;
 import com.GaoQue.model.Cart;
-import com.GaoQue.model.CartItem;
 import com.GaoQue.model.Product;
 import com.GaoQue.model.User;
 import com.GaoQue.service.cart.CartItemService;
@@ -10,7 +9,6 @@ import com.GaoQue.service.cart.CartService;
 import com.GaoQue.service.product.ProductService;
 import com.GaoQue.service.user.UserService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,16 +28,18 @@ import java.util.Locale;
 @Controller
 public class PageController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private CartService cartService;
-    @Autowired
-    private CartItemService cartItemService;
+    private final UserService userService;
+    private final ProductService productService;
+    private final CartService cartService;
+    private final CartItemService cartItemService;
 
-
+    public PageController(UserService userService, ProductService productService,
+                          CartService cartService, CartItemService cartItemService) {
+        this.userService = userService;
+        this.productService = productService;
+        this.cartService = cartService;
+        this.cartItemService = cartItemService;
+    }
 
     @ModelAttribute("user")
     public User addUserToModel() {
@@ -51,6 +51,7 @@ public class PageController {
         return null;
     }
 
+    //view page
     @GetMapping("/")
     public String layout(Model model, @RequestParam(value = "message", required = false) String message) {
         if (message != null) {
@@ -62,15 +63,31 @@ public class PageController {
         } else {
             model.addAttribute("error", "Đăng xuất thành công!");
         }
+        Locale vietnamLocale = Locale.of("vi", "VN");
+        List<Product> products = productService.getAllProducts();
+        List<Product> firstFiveProducts = products.size() > 5 ? products.subList(0, 5) : products;
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnamLocale);
+        for (Product product : products) {
+            product.setFormattedPrice(currencyFormatter.format(product.getPrice()));
+        }
+        List<ProductDto> convertedProducts = productService.getConvertedProducts(firstFiveProducts);
+        model.addAttribute("products", convertedProducts);
 
-        return "layout"; // Đảm bảo trả về đúng view
+        return "layout";
     }
 
     //view home
-    @GetMapping("/Home")
+    @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("message", "Chào mừng bạn đến với trang chủ!");
         return "Home/home";
+    }
+
+    //view service
+    @GetMapping("/Services")
+    public String service(Model model) {
+        model.addAttribute("message", "Chào mừng bạn đến với dịch vụ!");
+        return "/Services/services";
     }
 
     //view product
@@ -85,8 +102,6 @@ public class PageController {
         }
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         model.addAttribute("products", convertedProducts);
-
-        model.addAttribute("message", "Danh sách sản phẩm đã được tải thành công!");
         return "/Product/product";
     }
 
@@ -95,22 +110,22 @@ public class PageController {
     public String addToCart(@RequestParam("cartId") Long cartId,
                             @RequestParam("productId") Long productId,
                             @RequestParam("quantity") Integer quantity,
-                            Model model) {
+                            RedirectAttributes redirectAttributes ) {
         try {
             // Thêm sản phẩm vào giỏ hàng
             cartItemService.addItemToCart(cartId, productId, quantity);
-            model.addAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng!");
         } catch (Exception e) {
-            model.addAttribute("error", "Không thể thêm sản phẩm vào giỏ hàng: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Không thể thêm sản phẩm vào giỏ hàng: " + e.getMessage());
         }
-        return "redirect:/Product";  // Quay lại trang giỏ hàng
+        redirectAttributes.addFlashAttribute("message", "Sản phẩm đã được thêm vào giỏ hàng!");
+        return "redirect:/Product";
     }
 
+    //view Gỏi hàng
     @GetMapping("/cart")
     public String getCart(HttpSession session, Model model) {
         Long userId = (Long) session.getAttribute("userId");
 
-        // Kiểm tra nếu không có userId trong session, kiểm tra authentication từ Spring Security
         if (userId == null) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -124,20 +139,23 @@ public class PageController {
                 }
             } else {
                 model.addAttribute("message", "Vui lòng đăng nhập để xem giỏ hàng.");
-                return "redirect:/login"; // Chuyển hướng đến trang login
+                return "redirect:/login";
             }
         }
+        List<Product> products = productService.getAllProducts();
+        Locale vietnamLocale = Locale.of("vi", "VN");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(vietnamLocale);
+        for (Product product : products) {
+            product.setFormattedPrice(currencyFormatter.format(product.getPrice()));
+        }
 
-        // Lấy giỏ hàng của người dùng
         Cart cart = cartService.getCartByUserId(userId);
         if (cart == null) {
             model.addAttribute("message", "Giỏ hàng của bạn hiện tại trống.");
         } else {
             model.addAttribute("cart", cart);
-            model.addAttribute("message", "Giỏ hàng của bạn đã được tải thành công.");
         }
-
-        return "/Cart/Cart"; // Trả về trang giỏ hàng
+        return "/Cart/Cart";
     }
 
     //view classification

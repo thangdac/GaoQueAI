@@ -64,9 +64,8 @@
 
         <div th:each="product : ${products}" th:data-id="${product.id}" class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
           <div class="pricing-tem">
-            <span class="featured">Nỗi Bật</span>
             <h3 style="color: #20c997;"><a th:text="${product.name}"></a></h3>
-            <div class="price" th:text="${product.formattedPrice}"></div>
+            <div th:text="${product.formattedPrice}"></div>
             <div class="icon">
               <div th:if="${#lists.isEmpty(product.images)}" style="text-align: center;">
                 Không có hình ảnh
@@ -76,8 +75,7 @@
                      style="max-width: 150px; margin: 5px; border: 1px solid #ddd; border-radius: 4px;">
               </div>
             </div>
-            <div class="description-bottom card-body" th:text="${product.description}"></div>
-            <a href="#" class="btn-buy">Mua Ngay</a>
+            <div class="description-bottom card-body" th:text="${product.category.name}"></div>
             <form th:action="@{/cart/item/add}" method="post">
               <input type="hidden" name="productId" th:value="${product.id}" />
               <input type="hidden" name="quantity" value="1" />
