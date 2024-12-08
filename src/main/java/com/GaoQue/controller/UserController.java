@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/")
@@ -90,5 +91,40 @@ public class UserController {
         return "redirect:/login?logout=true"; // Chuyển hướng đến trang đăng nhập và hiển thị thông báo đăng xuất thành công
     }
 
+    @GetMapping("/profile")
+    public String viewProfile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userService.findByUser(username);
+        model.addAttribute("user", user);
+        return "/User/profile";
+    }
+
+    @GetMapping("/profile/edit")
+    public String editProfile(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User user = userService.findByUser(username);
+        model.addAttribute("user", user);
+        return "User/profileEdit";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateProfile(@RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
+                                @RequestParam("email") String email,
+                                @RequestParam("address") String address,
+                                @RequestParam("phoneNumber") String phoneNumber,
+                                RedirectAttributes redirectAttributes) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName(); // Tên người dùng (email)
+        User user = userService.findByUser(username);
+        userService.updateUser(user.getId(), firstName, lastName, email, address, phoneNumber);
+        redirectAttributes.addFlashAttribute("message", "Thông tin của bạn đã được cập nhật thành công!");
+        return "redirect:/profile";
+    }
 
 }

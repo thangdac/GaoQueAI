@@ -55,6 +55,8 @@ public class ProductController {
         }
 
         model.addAttribute("products", convertedProducts);
+
+
         return "/Admin/Product/Product";
     }
 

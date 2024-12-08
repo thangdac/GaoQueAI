@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch vụ</title>
+    <meta charset="UTF-8">
+
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+    <!-- Kế thừa header từ layout.html -->
+    <div th:replace="~{layout :: header}"></div>
+
+    <main class="main">
+
+        <!-- dịch vụ -->
+        <section id="services" class="services section ">
+
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Dịch Vụ</h2>
+                <div><span>Dịch vụ của </span> <span class="description-title">Chúng Tôi</span></div>
+            </div>
+
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="service-item  position-relative">
+                            <div class="icon">
+                                <i class="bi bi-grid-1x2"></i>
+                            </div>
+                            <a href="/Product" class="stretched-link">
+                                <h3>Bán Hàng</h3>
+                            </a>
+                            <p>Bán các sản phẩm liên quan đế gạo, các sản phẩm nông sản.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="service-item position-relative">
+                            <div class="icon">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <a href="/" class="stretched-link">
+                                <h3>Dự đoán Giá Gạo</h3>
+                            </a>
+                            <p>Đưa ra các nhận định gần đúng nhất về giá cả của thị trường gạo trong thời gian sắp tới.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="service-item position-relative">
+                            <div class="icon">
+                                <i class="bi bi-easel"></i>
+                            </div>
+                            <a href="/AINhanDien" class="stretched-link">
+                                <h3>Nhận Diện Hạt Gạo</h3>
+                            </a>
+                            <p>Người dùng cung cấp hình ảnh hạt gạo, website sẽ trả về thông tin loại gạo gần giống nhất.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                        <div class="service-item position-relative">
+                            <div class="icon">
+                                <i class="bi bi-chat-square-dots"></i>
+                            </div>
+                            <a href="/" class="stretched-link">
+                                <h3>Chat Bot Trả Lời</h3>
+                            </a>
+                            <p>Bạn đặt câu hỏi, AI sẽ tự Động trả lời câu hỏi của bạn 1 cách hợp lý nhất.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                        <div class="service-item position-relative">
+                            <div class="icon">
+                                <i class="bi bi-info-circle"></i>
+                            </div>
+                            <a href="/Info" class="stretched-link">
+                                <h3>Thông Tin Về Cửa Hàng</h3>
+                            </a>
+                            <p>Website Gạo Quê, là trang web bán hàng thiên về nghiêm cứu về Gạo.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                        <div class="service-item position-relative">
+                            <div class="icon">
+                                <i class="bi bi-person-lines-fill"></i>
+                            </div>
+                            <a href="/contact" class="stretched-link">
+                                <h3>Liên Hệ</h3>
+                            </a>
+                            <p>Liên hiện với bộ phận chăn sóc khách nếu bạn đang gặp vấn đề khó khăn.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+        <!-- dịch vụ -->
+
+    </main>
+
+    <!-- Kế thừa footer từ layout.html -->
+    <div th:replace="~{layout :: footer}"></div>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+
+</body>
+</html>

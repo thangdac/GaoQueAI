@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Getter
 @Setter
@@ -35,8 +37,6 @@ public class CartItem {
 
     public void setTotalPrice() {
         this.totalPrice = this.unitPrice.multiply(new BigDecimal(quantity));
-
     }
-
 
 }

@@ -6,7 +6,7 @@ import com.GaoQue.model.Order;
 import java.util.List;
 
 public interface IOrderService {
-    Order placeOrder(Long userId);
+    Order placeOrder(Long userId, String paymentMethod);
     OrderDto getOrder(Long orderId);
     List<OrderDto> getUserOrders(Long userId);
 }

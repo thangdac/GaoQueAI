@@ -31,9 +31,10 @@ public class OrderService implements IOrderService {
 
     @Transactional
     @Override
-    public Order placeOrder(Long userId) {
-        Cart cart   = cartService.getCartByUserId(userId);
+    public Order placeOrder(Long userId, String paymentMethod) {
+        Cart cart = cartService.getCartByUserId(userId);
         Order order = createOrder(cart);
+        order.setPaymentMethod(paymentMethod);
         List<OrderItem> orderItemList = createOrderItems(order, cart);
         order.setOrderItems(new HashSet<>(orderItemList));
         order.setTotalAmount(calculateTotalAmount(orderItemList));

@@ -3,24 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Trang chủ</title>
     <meta charset="UTF-8">
-
     <!-- Favicons -->
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
-
     <!-- Vendor CSS Files -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-
     <!-- Main CSS File -->
     <link href="/assets/css/main.css" rel="stylesheet">
 </head>
@@ -29,65 +25,118 @@
     <!-- Kế thừa header từ layout.html -->
     <div th:replace="~{layout :: header}"></div>
 
-
     <main class="main">
-    <!-- Hero Section -->
-    <section id="hero" class="hero section light-background">
 
-        <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
-            <div class="row gy-5">
-                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
-                    <h2>eStartup</h2>
-                    <p>Sed autem laudantium dolores. Voluptatem itaque ea consequatur eveniet. Eum quas beatae cumque eum quaerat.</p>
-                    <div class="d-flex">
-                        <a href="about" class="btn-get-started">Get Started</a>
-                        <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+        <!-- home -->
+        <section id="hero" class="hero section light-background">
+            <div class="position-absolute top-0 start-0 w-100 h-100 z-index-n1">
+                <img src="/assets/img/hero-img.png" alt="" class="img-fluid opacity-80">
+            </div>
+
+            <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+                <div class="row gy-5">
+                    <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center mt-4">
+                        <h2 class="text-white">Gạo Quê</h2>
+                        <div class="text-bg-light card col-md-8">
+                            <span class="fst-italic">Là một trong những nước xuất khẩu gạo hàng đầu thế giới nhưng trong nhiều năm qua,
+                            thương hiệu gạo Việt lại ít được biết đến ngay cả ở những nước ăn gạo truyền thống,
+                            hay những thị trường khó tính như Mỹ và châu Âu. Gạo Việt Nam bị đóng nhãn mác gạo nước ngoài,
+                            xuất khẩu thô với giá rẻ, sang các thị trường như châu Phi, Trung Quốc, ASEAN... là phổ biến,
+                            xuất khẩu nhiều nhưng doanh thu chưa cao.</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 align-items-center">
+                        <img src="/assets/img/hero-img.png" class="img-fluid" alt="">
                     </div>
                 </div>
-                <div class="col-lg-6 order-1 order-lg-2">
-                    <img src="/assets/img/hero-img.png" class="img-fluid" alt="">
+            </div>
+
+            <div class="icon-boxes position-relative" data-aos="fade-up" data-aos-delay="200">
+                <div class="container position-relative">
+                    <div class="row gy-4 mt-5">
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="icon-box">
+                                <div class="icon"><i class="bi bi-easel"></i></div>
+                                <h4 class="title"><a href="/AINhanDien" class="stretched-link">Nhận Diện</a></h4>
+                            </div>
+                        </div><!--End Icon Box -->
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="icon-box">
+                                <div class="icon"><i class="bi bi-grid-1x2"></i></div>
+                                <h4 class="title"><a href="/Product" class="stretched-link">Sản Phẩm</a></h4>
+                            </div>
+                        </div><!--End Icon Box -->
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="icon-box">
+                                <div class="icon"><i class="bi bi-graph-up"></i></div>
+                                <h4 class="title"><a href="" class="stretched-link">Dự Đoán</a></h4>
+                            </div>
+                        </div><!--End Icon Box -->
+
+                        <div class="col-xl-3 col-md-6">
+                            <div class="icon-box">
+                                <div class="icon"><i class="bi bi-boxes"></i></div>
+                                <h4 class="title"><a href="" class="stretched-link">Người Dùng</a></h4>
+                            </div>
+                        </div><!--End Icon Box -->
+
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="icon-boxes position-relative" data-aos="fade-up" data-aos-delay="200">
-            <div class="container position-relative">
-                <div class="row gy-4 mt-5">
+        </section>
+        <!-- End home -->
 
-                    <div class="col-xl-3 col-md-6">
-                        <div class="icon-box">
-                            <div class="icon"><i class="bi bi-easel"></i></div>
-                            <h4 class="title"><a href="" class="stretched-link">Lorem Ipsum</a></h4>
+        <!-- giới thiệu -->
+        <section id="about" class="about section">
+
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="100">
+                        <p class="who-we-are">Đội ngũ lập trình</p>
+                        <h3>Phát triển tiền năng nông sản Việt</h3>
+                        <p class="fst-italic">
+                            Là một trong những nước xuất khẩu gạo hàng đầu thế giới nhưng trong nhiều năm qua,
+                            thương hiệu gạo Việt lại ít được biết đến.
+                        </p>
+                        <ul>
+                            <li><i class="bi bi-check-circle"></i> <span>Dùng công nghệ mới để có thể phát triển nông sản cho nước nhà.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Nâng tầm gạo Việt, góp phần xây dựng đất nước.</span></li>
+                            <li><i class="bi bi-check-circle"></i> <span>Ứng dụng công nghệ cao, tối ưu hóa quá trình làm việc.</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
+                        <div class="row gy-4">
+                            <div class="col-lg-6">
+                                <img src="/assets/img/about-company-1.jpg" class="img-fluid" alt="">
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row gy-4">
+                                    <div class="col-lg-12">
+                                        <img src="/assets/img/about-company-2.jpg" class="img-fluid" alt="">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <img src="/assets/img/about-company-3.jpg" class="img-fluid" alt="">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div><!--End Icon Box -->
 
-                    <div class="col-xl-3 col-md-6">
-                        <div class="icon-box">
-                            <div class="icon"><i class="bi bi-gem"></i></div>
-                            <h4 class="title"><a href="" class="stretched-link">Sed ut perspiciatis</a></h4>
-                        </div>
-                    </div><!--End Icon Box -->
-
-                    <div class="col-xl-3 col-md-6">
-                        <div class="icon-box">
-                            <div class="icon"><i class="bi bi-geo-alt"></i></div>
-                            <h4 class="title"><a href="" class="stretched-link">Magni Dolores</a></h4>
-                        </div>
-                    </div><!--End Icon Box -->
-
-                    <div class="col-xl-3 col-md-6">
-                        <div class="icon-box">
-                            <div class="icon"><i class="bi bi-command"></i></div>
-                            <h4 class="title"><a href="" class="stretched-link">Nemo Enim</a></h4>
-                        </div>
-                    </div><!--End Icon Box -->
+                    </div>
 
                 </div>
-            </div>
-        </div>
 
-    </section><!-- /Hero Section -->
-</main>
+            </div>
+        </section>
+        <!-- giới thiệu-->
+
+    </main>
 
     <!-- Kế thừa footer từ layout.html -->
     <div th:replace="~{layout :: footer}"></div>

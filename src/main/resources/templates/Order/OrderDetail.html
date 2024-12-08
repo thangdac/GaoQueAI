@@ -1,49 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xác nhận đơn hàng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicons -->
+    <link href="/assets/img/favicon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+    <style>
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                visibility: visible;
+            }
+            100% {
+                opacity: 0;
+                visibility: hidden;
+                display: none; /* Ẩn phần tử hoàn toàn khỏi layout */
+            }
+        }
+    </style>
+
 </head>
-<body>
-<h1>Xác nhận đơn hàng</h1>
+<body class="index-page">
+    <!-- Header -->
+    <div th:replace="~{layout :: header}"></div>
 
-<h2>Thông tin người dùng</h2>
-<p>Tên: <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span></p>
-<p>Email: <span th:text="${user.email}"></span></p>
-<p>Địa chỉ: <span th:text="${user.addressLine}"></span></p>
-<p>Số điện thoại: <span th:text="${user.phoneNumber}"></span></p>
+    <!-- thông báo -->
+    <div th:if="${error}" class="alert alert-danger text-center" th:text="${error}"
+         style="animation: fadeOut 3s ease-out forwards;">
+    </div>
+    <!-- Show error messages -->
+    <div th:if="${message}" class="alert alert-success text-center" th:text="${message}"
+         style="animation: fadeOut 3s ease-out forwards;">
+    </div>
+    <!-- thông báo -->
 
-<h2>Đơn hàng</h2>
-<p>Ngày đặt: <span th:text="${order.orderDate}"></span></p>
-<p>Tổng tiền: <span th:text="${order.totalAmount}"></span></p>
+    <!-- order Section -->
+    <section id="pricing" class="pricing section">
+        <!-- Section Title -->
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Xác nhận đơn hàng</h2>
+            <div><span>Thông tin</span> <span class="description-title">Đơn Hàng</span></div>
+        </div>
+        <!-- End Section Title -->
 
+        <div class="container mt-3" data-aos="fade-up">
+            <form th:action="@{/order/submit}" method="post" class="border p-4 rounded shadow-lg" >
+                <input type="hidden" name="userId" th:value="${user.id}" />
+                <h3 class="mt-4">Thông tin người dùng</h3>
 
-<h3>Danh sách sản phẩm</h3>
-<table border="1">
-    <thead>
-    <tr>
-        <th>Tên sản phẩm</th>
-        <th>Số lượng</th>
-        <th>Đơn giá</th>
-    </tr>
-    </thead>
-    <tbody>
-    <th:block th:each="item : ${order.getOrderItems()}">
-        <tr>
-            <td th:text="${item.product.name}"></td>
-            <td th:text="${item.quantity}"></td>
-            <td th:text="${item.product.price}"></td>
-        </tr>
-    </th:block>
-    </tbody>
-</table>
+                <!-- Trường Tên (Chỉ xem không thể sửa) -->
+                <div class="form-group mb-3">
+                    <label for="firstName" class="form-label">Tên:</label>
+                    <input type="text" id="firstName" name="firstName" th:value="${user.firstName}" class="form-control" readonly />
+                </div>
 
-<!-- Form để xác nhận mua hàng -->
-<form th:action="@{/order/confirm}" method="get">
-    <input type="hidden" name="userId" th:value="${user.id}" />
-    <button type="submit">Mua hàng</button>
-</form>
+                <!-- Trường Họ (Chỉ xem không thể sửa) -->
+                <div class="form-group mb-3">
+                    <label for="lastName" class="form-label">Họ:</label>
+                    <input type="text" id="lastName" name="lastName" th:value="${user.lastName}" class="form-control" readonly />
+                </div>
+
+                <!-- Trường Email (Chỉ xem không thể sửa) -->
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" name="email" th:value="${user.email}" class="form-control" readonly />
+                </div>
+
+                <!-- Trường Địa chỉ (Có thể sửa) -->
+                <div class="form-group mb-3">
+                    <label for="address" class="form-label">Địa chỉ:</label>
+                    <input type="text" id="address" name="address" th:value="${user.addressLine}" class="form-control" required />
+                </div>
+
+                <!-- Trường Số điện thoại (Có thể sửa) -->
+                <div class="form-group mb-3">
+                    <label for="phoneNumber" class="form-label">Số điện thoại:</label>
+                    <input type="text" id="phoneNumber" name="phoneNumber" th:value="${user.phoneNumber}" class="form-control" required />
+                </div>
+
+                <h3 class="mt-4">Đơn hàng</h3>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="item : ${cart.items}">
+                        <tr>
+                            <td th:text="${item.product.name}"></td>
+                            <td th:text="${item.quantity}"></td>
+                            <td th:text="${item.product.price}"></td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+
+                <p>Tổng tiền: <span th:text="${cart.totalAmount}"></span></p>
+
+                <h3 class="mt-4">Phương thức thanh toán</h3>
+                <div class="form-group mb-4">
+                    <label for="paymentMethod" class="form-label">Chọn một Phương thức</label>
+                    <select name="paymentMethod" id="paymentMethod" class="form-select" required>
+                        <option value="Cash on Delivery">Thanh toán khi nhận hàng</option>
+                        <option value="Credit Card">Thẻ tín dụng</option>
+                        <option value="PayPal">PayPal</option>
+                    </select>
+                </div>
+
+                <!-- Nút gửi form -->
+                <button type="submit" class="btn btn-primary btn-lg w-100">Mua hàng</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div th:replace="~{layout :: footer}"></div>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+    <!-- Main JS File -->
+
 </body>
 </html>
+
