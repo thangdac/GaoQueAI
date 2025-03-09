@@ -3,7 +3,7 @@
 ## Giới thiệu
 Gạo Quê là một trang web chuyên cung cấp thông tin và bán hàng về các loại gạo Việt Nam. Chúng tôi kết hợp công nghệ AI để nhận diện, phân loại gạo và dự đoán giá thị trên thị trường.
 
-![Hình ảnh minh họa](https://via.placeholder.com/800x400.png?text=G%E1%BA%A1o+Qu%C3%AA+Website)
+![Hình ảnh minh họa](Screenshot 2025-03-10 010923.png)
 
 ---
 
