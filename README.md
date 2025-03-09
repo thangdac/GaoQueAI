@@ -27,35 +27,15 @@ Gạo Quê là một trang web chuyên cung cấp thông tin và bán hàng về
 ### Chạy Backend với Spring Boot (Java)
 1. Clone repository:
    ```bash
-   git clone https://github.com/yourusername/gao-que.git
-
-### Cài đặt
-1. Clone repo:
-   ```bash
-   git clone https://github.com/yourusername/gao-que.git
-   ```
-2. Cài đặt các phụ thuộc:
-   ```bash
-   cd gao-que
-   npm install
-   ```
-
-### Chạy dự án
-Khởi chạy server dev:
-```bash
-npm run dev
-```
-
-Server sẽ chạy tại: [http://localhost:3000](http://localhost:3000)
+   git clone https://github.com/thangdac/GaoQueAI.git
 
 ---
 
 ## Công nghệ sử dụng
-- **React**: Xây dựng giao diện.
-- **Node.js**: Backend.
-- **AI Model**: Nhận diện và phân loại gạo.
+- **Java Spring Boot MVC**: Xây dựng backend.
+- **Flask Python**: Xử lý các tác vụ AI (nhận diện và phân loại gạo).
 - **MongoDB**: Lưu trữ dữ liệu.
-
+- **HTML/CSS/JavaScript**: Xây dựng giao diện người dùng.
 ---
 
 ## Góp ý
