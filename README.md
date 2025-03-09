@@ -39,7 +39,7 @@ Gạo Quê là một trang web chuyên cung cấp thông tin và bán hàng về
 ---
 
 ## Góp ý
-Chúng tôi luôn chào đón góp ý và hợp tác! Hãy tạo pull request hoặc liên hệ qua email: [contact@gaoque.com](mailto:contact@gaoque.com).
+Chúng tôi luôn chào đón góp ý và hợp tác! Hãy tạo pull request hoặc liên hệ qua email: [contact@gaoque.com](mailto:nguyendac1606123@gmail.com).
 
 ---
 
