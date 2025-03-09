@@ -7,9 +7,11 @@ Gạo Quê là một trang web chuyên cung cấp thông tin và bán hàng về
 
 ## Tính năng
 1. **Nhận Diện và Phân Loại Hạt Gạo**: Nhận diện, phân loại các loại gạo nhờ AI.
-![Hình ảnh minh họa](https://raw.githubusercontent.com/thangdac/GaoQueAI/refs/heads/master/Screenshot%202025-03-10%20010923.png)
-3. **Dự đoán giá**: Cung cấp giá gạo theo thị trường hiện tại.
-4. **Gian hàng trực tuyến**: Mua hàng gọn gọn, nhanh chóng.
+![Hình ảnh minh họa](https://raw.githubusercontent.com/thangdac/GaoQueAI/refs/heads/master/Screenshot%202025-03-10%20012623.png)
+2. **Dự đoán giá**: Cung cấp giá gạo theo thị trường hiện tại.
+![Hình ảnh minh họa](https://raw.githubusercontent.com/thangdac/GaoQueAI/refs/heads/master/Screenshot%202025-03-10%20012827.png)
+3. **Chat trực tiếp với AI, có gợi ý sản phẩm cho từ câu trả lời**: Giúp người dùng nắm bắt thông tin về Gạo Quê, trả lời các câu hỏi về Gạo.
+![Hình ảnh minh họa](https://raw.githubusercontent.com/thangdac/GaoQueAI/refs/heads/master/Screenshot%202025-03-10%20012945.png)
 5. **Thông tin nghiên cứu**: Các bài viết về lợi ích dinh dưỡng và ngành gạo.
 
 ---
