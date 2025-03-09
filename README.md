@@ -19,8 +19,15 @@ Gạo Quê là một trang web chuyên cung cấp thông tin và bán hàng về
 ## Cài đặt và chạy dự án
 
 ### Yêu cầu hệ thống
-- **Node.js**: Phiên bản 16+.
-- **npm**: Phiên bản mới nhất.
+- **Java 11** (hoặc Java 8): JDK để chạy Spring Boot.
+- **Maven**: Quản lý dependency và build project.
+- **Python 3.8+**: Để chạy ứng dụng Flask.
+- **pip**: Quản lý thư viện Python.
+
+### Chạy Backend với Spring Boot (Java)
+1. Clone repository:
+   ```bash
+   git clone https://github.com/yourusername/gao-que.git
 
 ### Cài đặt
 1. Clone repo:
